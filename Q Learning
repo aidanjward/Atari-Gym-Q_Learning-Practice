@@ -1,0 +1,64 @@
+#imports
+import gym
+import numpy as np
+
+#creating environment
+env = gym.make('MsPacman-ram-v0')
+
+state_size = env.observation_space.n
+action_size = env.state_space.n
+
+#initializing Q table in size of state and action
+Q = np.zeros((state_size, action_size))
+
+#initializing threshold for fifty fifty chance
+threshold = 0.5
+barrier = np.random.rand(0,1)
+
+#setting up learning rate and reward penalty
+lr = 0.05
+decay = 0.95
+
+class QTip():
+    #explore function
+    def explore(env):
+        action = env.action_space.sample()
+        return action
+    
+    #exploit function
+    def exploit(self, Q):
+        action = self.new_state
+        return action
+    
+    #Q Learn algorithm
+    def qlearn(self, env):
+        self.env = env
+        episodes = 100
+        for episode_e in range(episodes):
+            #start the state over for new episodes.
+            observation = env.reset()
+            #for number of action in range episodes
+            for episode_i in range(episodes):
+                #if the random number is above the threshold, the agent explores.
+                if barrier > threshold:
+                    explore(env)
+                    #add new state with optimal reward based on previous step
+                    observation, reward, done, _ = env.step(action.argmax())
+                    Q[new_state] = observation, reward, done, _
+                    new_state = np.max(Q[new_state])
+                    #add new_state to self 
+                    self.new_state = new_state
+                    env.render()
+                    #Q learning equation
+                    Q[state, action] = (Q[state, action] + lr * (reward + decay) + Q[new_state] - Q[state, action])
+                    if done: 
+                        break     
+                #if the random number is below the threshold, the agent exploits old rewards
+                else: 
+                    exploit(self, Q)
+                    if done: 
+                        break
+
+QTip
+env.close()
+        
